@@ -1,0 +1,6 @@
+{
+  "name": "Dimension Studio",
+  "description": "Bulk dimension image generator for e-commerce products fetched from an external Google Sheet.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
