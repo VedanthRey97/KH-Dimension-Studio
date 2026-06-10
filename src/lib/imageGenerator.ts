@@ -100,10 +100,21 @@ export async function generateDimensionImage(imageUrl: string, sizeString: strin
            let bottomText = sizeString;
            let rightText = sizeString;
            
-           const parts = sizeString.toLowerCase().replace('cm', '').split('x').map(s => s.trim());
+           // Extract numbers safely to handle orientation automatically
+           const parts = sizeString.toLowerCase().replace(/cm\.?/g, '').split('x').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
            if (parts.length >= 2) {
-               bottomText = `${parts[0]} cm.`;
-               rightText = `${parts[1]} cm.`;
+               const maxVal = Math.max(parts[0], parts[1]);
+               const minVal = Math.min(parts[0], parts[1]);
+               
+               if (bounds.w > bounds.h) {
+                   // Landscape: bottom is longer
+                   bottomText = `${maxVal} cm.`;
+                   rightText = `${minVal} cm.`;
+               } else {
+                   // Portrait or Square: right is longer (or equal)
+                   bottomText = `${minVal} cm.`;
+                   rightText = `${maxVal} cm.`;
+               }
            }
            
            ctx.fillStyle = "#6b7280";
